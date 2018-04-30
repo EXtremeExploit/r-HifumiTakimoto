@@ -25,8 +25,8 @@ client.SubmissionStream({
     isgd.shorten('https://www.reddit.com/' + sub.subreddit_name_prefixed + '/' + sub.id, (link) => {
         twit.post('statuses/update', {
             status: '(' + link + ') ' + sub.title + ' ' + sub.url
-        }).then((err) => {
-            console.log(err);
+        }).then((tw) => {
+            console.log('Posted:' + tw.data.text);
         }).catch(err => console.log(err));
     });
 
