@@ -23,11 +23,8 @@ client.SubmissionStream({
     subreddit: 'TakimotoHifumi'
 }).on('submission', sub => {
     isgd.shorten('https://www.reddit.com/' + sub.subreddit_name_prefixed + '/' + sub.id, (link) => {
-        var fs = require('fs');
-        var media = fs.readlinkSync(sub.url, { encoding: 'base64' });
         twit.post('statuses/update', {
-            status: '(' + link + ') ' + sub.title,
-            media_data: media
+            status: '(' + link + ') ' + sub.title + ' ' + sub.url
         }).then((tw) => {
             console.log('Posted:' + tw.data.text);
         }).catch(err => console.log(err));
