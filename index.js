@@ -1,16 +1,10 @@
 var dotenv = require('dotenv');
 dotenv.config();
-var _reddit = require('snoowrap');
-var snoostorm = require('snoostorm');
+// Link shorter
+var isg = require('isgd')
+
+// Twitter setup
 var _twit = require('twit');
-var isgd = require('isgd');
-var r = new _reddit({
-    username: process.env.reddit_username,
-    password: process.env.reddit_password,
-    userAgent: 'r/HifumiTakimoto Twitter Bot',
-    clientId: process.env.reddit_clientID,
-    clientSecret: process.env.reddit_clientSecret
-});
 const twit = new _twit({
     access_token: process.env.twitter_accesToken,
     access_token_secret: process.env.twitter_accesTokenSecret,
@@ -18,11 +12,23 @@ const twit = new _twit({
     consumer_secret: process.env.twitter_consumerSecret,
 });
 
-const client = new snoostorm(r);
-client.SubmissionStream({
+// Reddit setup
+var _reddit = require('snoowrap');
+var snoostorm = require('snoostorm');
+var r = new _reddit({
+    username: process.env.reddit_username,
+    password: process.env.reddit_password,
+    userAgent: 'r/HifumiTakimoto Twitter Bot',
+    clientId: process.env.reddit_clientID,
+    clientSecret: process.env.reddit_clientSecret
+});
+const reddit = new snoostorm(r);
+
+// The bot itself
+reddit.SubmissionStream({
     subreddit: 'TakimotoHifumi'
 }).on('submission', sub => {
-    isgd.shorten('https://www.reddit.com/' + sub.subreddit_name_prefixed + '/' + sub.id, (link) => {
+    isgd.shorten('https://www.reddit.com/' + sub.permalink, (link) => {
         twit.post('statuses/update', {
             status: '(' + link + ') ' + sub.title
         }).then((tw) => {
