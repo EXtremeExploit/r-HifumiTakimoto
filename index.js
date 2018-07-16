@@ -1,7 +1,7 @@
 var dotenv = require('dotenv');
 dotenv.config();
 // Link shorter
-var isg = require('isgd')
+var isgd = require('isgd');
 
 // Twitter setup
 var _twit = require('twit');
